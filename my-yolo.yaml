@@ -1,0 +1,8 @@
+path: /home/vipuser/yolov8-main/datasets
+train: images
+val: images
+
+names:
+  0: 1
+  1: 2
+  2: 3
