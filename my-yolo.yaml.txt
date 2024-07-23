@@ -1,0 +1,8 @@
+path: C:\Users\21659\Desktop\yolov8\datasets
+train: images
+val: images
+
+names:
+  0: 1
+  1: 2
+  2: 3
