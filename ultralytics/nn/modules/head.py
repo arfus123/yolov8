@@ -53,6 +53,15 @@ class Detect(nn.Module):
         if self.end2end:
             return self.forward_end2end(x)
 
+        # 导出 onnx 增加
+        y = []
+        for i in range(self.nl):
+            t1 = self.cv2[i](x[i])
+            t2 = self.cv3[i](x[i])
+            y.append(t1)
+            y.append(t2)
+        return y
+
         for i in range(self.nl):
             x[i] = torch.cat((self.cv2[i](x[i]), self.cv3[i](x[i])), 1)
         if self.training:  # Training path

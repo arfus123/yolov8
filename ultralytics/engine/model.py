@@ -140,6 +140,15 @@ class Model(nn.Module):
         else:
             self._load(model, task=task)
 
+        print("===========  onnx =========== ")
+        import torch
+        dummy_input = torch.randn(1, 3, 640, 640)
+        input_names = ["data"]
+        output_names = ["reg1", "cls1", "reg2", "cls2", "reg3", "cls3"]
+        torch.onnx.export(self.model, dummy_input, "./weights/yolov8_relu_80class_ZQ1.onnx", verbose=False, input_names=input_names, output_names=output_names, opset_version=11)
+        print("======================== convert onnx Finished! .... ")
+  
+
     def __call__(
         self,
         source: Union[str, Path, int, list, tuple, np.ndarray, torch.Tensor] = None,
