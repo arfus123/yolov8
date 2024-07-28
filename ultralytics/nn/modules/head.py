@@ -49,16 +49,26 @@ class Detect(nn.Module):
             self.one2one_cv3 = copy.deepcopy(self.cv3)
 
     def forward(self, x):
-        """Concatenates and returns predicted bounding boxes and class probabilities."""
-        if self.end2end:
-            return self.forward_end2end(x)
+        # """Concatenates and returns predicted bounding boxes and class probabilities."""
+        # if self.end2end:
+        #     return self.forward_end2end(x)
 
+        # for i in range(self.nl):
+        #     x[i] = torch.cat((self.cv2[i](x[i]), self.cv3[i](x[i])), 1)
+        # if self.training:  # Training path
+        #     return x
+        # y = self._inference(x)
+        # return y if self.export else (y, x)
+    
+        # 导出 onnx 增加
+        y = []
         for i in range(self.nl):
-            x[i] = torch.cat((self.cv2[i](x[i]), self.cv3[i](x[i])), 1)
-        if self.training:  # Training path
-            return x
-        y = self._inference(x)
-        return y if self.export else (y, x)
+            t1 = self.cv2[i](x[i])
+            t2 = self.cv3[i](x[i])
+            y.append(t1)
+            y.append(t2)
+        return y
+
 
     def forward_end2end(self, x):
         """

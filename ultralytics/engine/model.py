@@ -301,7 +301,16 @@ class Model(nn.Module):
             self.ckpt_path = weights
         self.overrides["model"] = weights
         self.overrides["task"] = self.task
-        self.model_name = weights
+        # self.model_name = weights
+        
+        print("===========  onnx =========== ")
+        import torch
+        dummy_input = torch.randn(1, 3, 640, 640)
+        input_names = ["data"]
+        output_names = ["reg1", "cls1", "reg2", "cls2", "reg3", "cls3"]
+        torch.onnx.export(self.model, dummy_input, "./yolov8n.onnx", verbose=False, input_names=input_names, output_names=output_names, opset_version=11)
+        print("======================== convert onnx Finished! .... ")
+
 
     def _check_is_pytorch_model(self) -> None:
         """
